@@ -6,21 +6,18 @@
         private readonly double costPerDistance;
         private readonly double costPerMinute;
 
-        //uc1-calculate fare
         public InvoiceGenerator()
         {
             minFare = 5;
             costPerDistance = 10;
             costPerMinute = 1;
         }
-
-        //uc2-multiple fare
         public double CalculateFare(double distance, double time)
         {
             double totalFare = (distance * costPerDistance) + (time * costPerMinute);
             return Math.Max(totalFare, minFare);
         }
-        public double CalculateFare(Ride[] rides)
+        public (int noOfRides, double totalFare, double averageFare) CalculateFare(Ride[] rides)
         {
             try
             {
@@ -29,7 +26,7 @@
                 double totalFare = 0;
                 foreach (Ride ride in rides)
                     totalFare += CalculateFare(ride.Distance, ride.Time);
-                return totalFare;
+                return (rides.Length, totalFare, totalFare / rides.Length);
             }
             catch (ArgumentNullException)
             {
